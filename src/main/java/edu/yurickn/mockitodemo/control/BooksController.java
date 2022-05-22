@@ -22,6 +22,6 @@ public class BooksController {
     }
 
     public void removeBook(Long id) {
-        repository.removeBook(id);
+        repository.removeBook(id);//Remove this line to see how dp works Mockito.verify
     }
 }

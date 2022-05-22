@@ -12,8 +12,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 @ExtendWith(MockitoExtension.class)
 public class BooksControllerTest {
 
@@ -31,14 +29,15 @@ public class BooksControllerTest {
         String name = "some name";
         String author = "some author";
         Long expectedId = 132L;
-        AtomicReference<Book> savedBook = new AtomicReference<>();
 
+        //For capturing passed argument for check it in the test
         ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+        //Setting up method action
         Mockito.when(repository.saveBook(captor.capture())).then((Answer<Long>) invocationOnMock -> {
             Book book = invocationOnMock.getArgument(0, Book.class);
+            //Emulation DBs action of setting new ids for new objects
             if (book.getId() == null)
                 book.setId(expectedId);
-            savedBook.set(book);
             return book.getId();
         });
 
@@ -48,7 +47,7 @@ public class BooksControllerTest {
         Assertions.assertNotNull(actualId);
         Assertions.assertEquals(expectedId, actualId);
 
-        Book actualBook = savedBook.get();
+        Book actualBook = captor.getValue();//Get captured object for comparing
         Assertions.assertNotNull(actualBook);
         Assertions.assertEquals(expectedId, actualBook.getId());
         Assertions.assertEquals(name, actualBook.getName());
@@ -62,6 +61,7 @@ public class BooksControllerTest {
         expectedBook.setId(id);
         expectedBook.setName("some name");
         expectedBook.setAuthor("some author");
+        //Setting up returning value by id (mocking the action)
         Mockito.when(repository.getBook(id)).thenReturn(expectedBook);
 
         Book actualBook = controller.getBook(id);
@@ -75,6 +75,7 @@ public class BooksControllerTest {
     void testRemoveBook() {
         Long id = 123L;
         controller.removeBook(id);
+        //Verifying method call with concrete id (TESTING the simple delegation)
         Mockito.verify(repository, Mockito.atLeastOnce()).removeBook(id);
     }
 
