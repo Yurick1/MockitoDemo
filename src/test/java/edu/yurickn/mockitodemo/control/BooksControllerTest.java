@@ -31,7 +31,7 @@ public class BooksControllerTest {
         String author = "some author";
         Long expectedId = 132L;
 
-        //For capturing passed argument for check it in the test
+        //Used to capture passed argument for check it in the test
         ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
         //Setting up method action
         Mockito.when(repository.saveBook(captor.capture())).then((Answer<Long>) invocationOnMock -> {
