@@ -21,7 +21,8 @@ public class BooksControllerTest {
 
     @BeforeEach
     void setUp() {
-        controller = new BooksController(repository);
+        controller = new BooksController();
+        controller.setRepository(repository);
     }
 
     @Test
@@ -81,6 +82,7 @@ public class BooksControllerTest {
 
     @AfterEach
     void tearDown() {
+        repository = null;
         controller = null;
     }
 }

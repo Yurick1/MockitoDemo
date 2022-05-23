@@ -4,9 +4,13 @@ import edu.yurickn.mockitodemo.entity.Book;
 
 public class BooksController {
 
-    private final BooksRepository repository;
+    private BooksRepository repository;
 
-    public BooksController(BooksRepository repository) {
+    public BooksController() {
+
+    }
+
+    public void setRepository(BooksRepository repository) {
         this.repository = repository;
     }
 
